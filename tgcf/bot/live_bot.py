@@ -133,13 +133,23 @@ async def help_command_handler(event):
 
 def get_events():
     _ = get_command_prefix()
-    logging.info(f"Command prefix is . for userbot and / for bot")
-    command_events = {
-        "start": (start_command_handler, events.NewMessage(pattern=f"{_}start")),
-        "forward": (forward_command_handler, events.NewMessage(pattern=f"{_}forward")),
-        "remove": (remove_command_handler, events.NewMessage(pattern=f"{_}remove")),
-        "style": (style_command_handler, events.NewMessage(pattern=f"{_}style")),
+    logging.info("Command prefix is . for userbot and / for bot")
+    return {
+        "start": (
+            start_command_handler,
+            events.NewMessage(pattern=f"{_}start"),
+        ),
+        "forward": (
+            forward_command_handler,
+            events.NewMessage(pattern=f"{_}forward"),
+        ),
+        "remove": (
+            remove_command_handler,
+            events.NewMessage(pattern=f"{_}remove"),
+        ),
+        "style": (
+            style_command_handler,
+            events.NewMessage(pattern=f"{_}style"),
+        ),
         "help": (help_command_handler, events.NewMessage(pattern=f"{_}help")),
     }
-
-    return command_events

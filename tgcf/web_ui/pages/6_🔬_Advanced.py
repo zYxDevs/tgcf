@@ -28,7 +28,7 @@ if check_password(st):
                 data = json.loads(file.read())
                 dumped = json.dumps(data, indent=3)
             st.download_button(
-                f"Download config json", data=dumped, file_name=CONFIG_FILE_NAME
+                "Download config json", data=dumped, file_name=CONFIG_FILE_NAME
             )
             st.json(data)
 

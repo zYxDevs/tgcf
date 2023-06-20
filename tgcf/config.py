@@ -49,14 +49,12 @@ class PastSettings(BaseModel):
     delay: int = 0
 
     @validator("delay")
-    def validate_delay(cls, val):  # pylint: disable=no-self-use,no-self-argument
+    def validate_delay(cls, val):    # pylint: disable=no-self-use,no-self-argument
         """Check if the delay used by user is values. If not, use closest logical values."""
         if val not in range(0, 101):
             logging.warning("delay must be within 0 to 100 seconds")
-            if val > 100:
-                val = 100
-            if val < 0:
-                val = 0
+            val = min(val, 100)
+            val = max(val, 0)
         return val
 
 
@@ -107,8 +105,6 @@ def detect_config_type() -> int:
         return 2
     if CONFIG_FILE_NAME in os.listdir():
         logging.info(f"{CONFIG_FILE_NAME} detected!")
-        return 1
-
     else:
         logging.info(
             "config file not found. mongo not found. creating local config file."
@@ -116,7 +112,8 @@ def detect_config_type() -> int:
         cfg = Config()
         write_config_to_file(cfg)
         logging.info(f"{CONFIG_FILE_NAME} created!")
-        return 1
+
+    return 1
 
 
 def read_config(count=1) -> Config:
@@ -142,7 +139,7 @@ def read_config(count=1) -> Config:
 
 def write_config(config: Config, persist=True):
     """Write changes in config back to file."""
-    if stg.CONFIG_TYPE == 1 or stg.CONFIG_TYPE == 0:
+    if stg.CONFIG_TYPE in [1, 0]:
         write_config_to_file(config)
     elif stg.CONFIG_TYPE == 2:
         if persist:
@@ -236,8 +233,7 @@ def update_db(cfg):
 
 def read_db():
     obj = stg.mycol.find_one({"_id": 0})
-    cfg = Config(**obj["config"])
-    return cfg
+    return Config(**obj["config"])
 
 
 PASSWORD = os.getenv("PASSWORD", "tgcf")

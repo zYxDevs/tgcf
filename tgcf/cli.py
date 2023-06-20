@@ -39,10 +39,7 @@ class Mode(str, Enum):
 def verbosity_callback(value: bool):
     """Set logging level."""
     traceback.install()
-    if value:
-        level = logging.INFO
-    else:
-        level = logging.WARNING
+    level = logging.INFO if value else logging.WARNING
     logging.basicConfig(
         level=level,
         format="%(message)s",

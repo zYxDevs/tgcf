@@ -54,11 +54,7 @@ if check_password(st):
         if st.button("Save"):
             write_config(CONFIG)
 
-    check = False
-
-    if CONFIG.pid == 0:
-        check = st.button("Run", type="primary")
-
+    check = st.button("Run", type="primary") if CONFIG.pid == 0 else False
     if CONFIG.pid != 0:
         st.warning(
             "You must click stop and then re-run tgcf to apply changes in config."
@@ -74,8 +70,7 @@ if check_password(st):
             time.sleep(1)
             st.experimental_rerun()
 
-        stop = st.button("Stop", type="primary")
-        if stop:
+        if stop := st.button("Stop", type="primary"):
             try:
                 os.kill(CONFIG.pid, signal.SIGSTOP)
             except Exception as err:

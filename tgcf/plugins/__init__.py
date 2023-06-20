@@ -73,7 +73,7 @@ def load_plugins() -> Dict[str, TgcfPlugin]:
         plugin_class_name = f"Tgcf{plugin_id.title()}"
 
         try:  # try to load first party plugin
-            plugin_module = import_module("tgcf.plugins." + plugin_id)
+            plugin_module = import_module(f"tgcf.plugins.{plugin_id}")
         except ModuleNotFoundError:
             logging.error(
                 f"{plugin_id} is not a first party plugin. Third party plugins are not supported."
@@ -89,14 +89,14 @@ def load_plugins() -> Dict[str, TgcfPlugin]:
                 )
                 continue
             plugin: TgcfPlugin = plugin_class(item[1])
-            if not plugin.id_ == plugin_id:
+            if plugin.id_ != plugin_id:
                 logging.error(f"Plugin id for {plugin_id} does not match expected id.")
                 continue
         except AttributeError:
             logging.error(f"Found plugin {plugin_id}, but plguin class not found.")
         else:
             logging.info(f"Loaded plugin {plugin_id}")
-            _plugins.update({plugin.id_: plugin})
+            _plugins[plugin.id_] = plugin
     return _plugins
 
 

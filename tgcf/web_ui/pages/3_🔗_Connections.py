@@ -14,8 +14,7 @@ st.set_page_config(
 )
 hide_st(st)
 if check_password(st):
-    add_new = st.button("Add new connection")
-    if add_new:
+    if add_new := st.button("Add new connection"):
         CONFIG.forwards.append(Forward())
         write_config(CONFIG)
 
@@ -32,11 +31,7 @@ if check_password(st):
                 label = CONFIG.forwards[i].con_name
             else:
                 label = f"Connection {i+1}"
-            if CONFIG.forwards[i].use_this:
-                status = "🟢"
-            else:
-                status = "🟡"
-
+            status = "🟢" if CONFIG.forwards[i].use_this else "🟡"
             tab_strings.append(f"{status} {label}")
 
         tabs = st.tabs(list(tab_strings))
@@ -44,11 +39,7 @@ if check_password(st):
         for i in range(num):
             with tabs[i]:
                 con = i + 1
-                name = CONFIG.forwards[i].con_name
-                if name:
-                    label = f"{con} [{name}]"
-                else:
-                    label = con
+                label = f"{con} [{name}]" if (name := CONFIG.forwards[i].con_name) else con
                 with st.expander("Modify Metadata"):
                     st.write(f"Connection ID: **{con}**")
                     CONFIG.forwards[i].con_name = st.text_input(

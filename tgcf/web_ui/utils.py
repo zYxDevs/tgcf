@@ -13,17 +13,11 @@ def get_list(string: str):
 
 
 def get_string(my_list: List):
-    string = ""
-    for item in my_list:
-        string += f"{item}\n"
-    return string
+    return "".join(f"{item}\n" for item in my_list)
 
 
 def dict_to_list(dict: Dict):
-    my_list = []
-    for key, val in dict.items():
-        my_list.append(f"{key}: {val}")
-    return my_list
+    return [f"{key}: {val}" for key, val in dict.items()]
 
 
 def list_to_dict(my_list: List):
@@ -35,8 +29,7 @@ def list_to_dict(my_list: List):
 
 
 def hide_st(st):
-    dev = os.getenv("DEV")
-    if dev:
+    if dev := os.getenv("DEV"):
         return
     hide_streamlit_style = """
             <style>
