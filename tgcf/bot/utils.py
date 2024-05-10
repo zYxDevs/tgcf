@@ -26,10 +26,10 @@ def get_args(text: str) -> str:
     """Return the part of message following the command."""
     splitted = text.split(" ", 1)
 
-    if not len(splitted) == 2:
+    if len(splitted) != 2:
         splitted = text.split("\n", 1)
-        if not len(splitted) == 2:
-            return ""
+    if len(splitted) != 2:
+        return ""
 
     prefix, args = splitted
     args = args.strip()
@@ -39,7 +39,7 @@ def get_args(text: str) -> str:
 
 def display_forwards(forwards: List[Forward]) -> str:
     """Return a string that beautifully displays all current forwards."""
-    if len(forwards) == 0:
+    if not forwards:
         return "Currently no forwards are set"
     forward_str = "This is your configuration"
     for forward in forwards:

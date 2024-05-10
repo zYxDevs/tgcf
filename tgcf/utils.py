@@ -72,9 +72,7 @@ def safe_name(string: str) -> str:
 
 
 def match(pattern: str, string: str, regex: bool) -> bool:
-    if regex:
-        return bool(re.findall(pattern, string))
-    return pattern in string
+    return bool(re.findall(pattern, string)) if regex else pattern in string
 
 
 def replace(pattern: str, new: str, string: str, regex: bool) -> str:

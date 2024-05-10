@@ -73,9 +73,7 @@ async def edited_message_handler(event) -> None:
     if not tm:
         return
 
-    fwded_msgs = st.stored.get(event_uid)
-
-    if fwded_msgs:
+    if fwded_msgs := st.stored.get(event_uid):
         for _, msg in fwded_msgs.items():
             if config.CONFIG.live.delete_on_edit == message.text:
                 await msg.delete()
@@ -100,8 +98,7 @@ async def deleted_message_handler(event):
     logging.info(f"Message deleted in {chat_id}")
 
     event_uid = st.EventUid(event)
-    fwded_msgs = st.stored.get(event_uid)
-    if fwded_msgs:
+    if fwded_msgs := st.stored.get(event_uid):
         for _, msg in fwded_msgs.items():
             await msg.delete()
         return
